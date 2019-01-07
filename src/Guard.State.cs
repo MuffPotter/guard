@@ -22,7 +22,7 @@
         [DebuggerStepThrough]
         [GuardFunction("State", "gop")]
         public static void Operation(
-            bool valid, string message = null, [CallerMemberName]string caller = null)
+            bool valid, string? message = null, [CallerMemberName]string? caller = null)
         {
             if (!valid)
                 throw Fail(new InvalidOperationException(message ?? Messages.State(caller)));
@@ -40,7 +40,7 @@
         [DebuggerStepThrough]
         [GuardFunction("State", "gsup")]
         public static void Support(
-            bool supported, string message = null, [CallerMemberName]string caller = null)
+            bool supported, string? message = null, [CallerMemberName]string? caller = null)
         {
             if (!supported)
                 throw Fail(new NotSupportedException(message ?? Messages.Support(caller)));
@@ -60,7 +60,7 @@
         [ContractAnnotation("disposed:true => halt")]
         [DebuggerStepThrough]
         [GuardFunction("State", "gdis")]
-        public static void Disposal(bool disposed, string objectName = null, string message = null)
+        public static void Disposal(bool disposed, string? objectName = null, string? message = null)
         {
             if (disposed)
                 throw Fail(new ObjectDisposedException(objectName, message ?? Messages.Disposal()));

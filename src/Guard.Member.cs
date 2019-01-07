@@ -36,7 +36,7 @@
             in this ArgumentInfo<T> argument,
             Expression<Func<T, TMember>> member,
             Action<ArgumentInfo<TMember>> validation,
-            Func<T, TMember, Exception, string> message = null)
+            Func<T, TMember, Exception, string>? message = null)
             => ref argument.Member(member, validation, false, message);
 
         /// <summary>Requires a member of the argument to satisfy specified preconditions.</summary>
@@ -72,7 +72,7 @@
             Expression<Func<T, TMember>> member,
             Action<ArgumentInfo<TMember>> validation,
             bool validatesRange,
-            Func<T, TMember, Exception, string> message = null)
+            Func<T, TMember, Exception, string>? message = null)
         {
             if (argument.HasValue() && member != null && validation != null)
             {
@@ -141,7 +141,7 @@
             in this ArgumentInfo<T?> argument,
             Expression<Func<T, TMember>> member,
             Action<ArgumentInfo<TMember>> validation,
-            Func<T, TMember, Exception, string> message = null)
+            Func<T, TMember, Exception, string>? message = null)
             where T : struct
             => ref argument.Member(member, validation, false, message);
 
@@ -178,7 +178,7 @@
             Expression<Func<T, TMember>> member,
             Action<ArgumentInfo<TMember>> validation,
             bool validatesRange,
-            Func<T, TMember, Exception, string> message = null)
+            Func<T, TMember, Exception, string>? message = null)
             where T : struct
         {
             if (argument.HasValue() && member != null && validation != null)
@@ -254,7 +254,7 @@
                 try
                 {
                     for (var e = mexp; rootType != e.Member.DeclaringType; i++)
-                        e = e.Expression as MemberExpression;
+                        e = (e.Expression as MemberExpression)!;
                 }
                 catch (NullReferenceException ex)
                 {
@@ -280,7 +280,7 @@
                         }
                     }
 
-                    return info as ArgumentMemberInfo<T, TMember>;
+                    return (info as ArgumentMemberInfo<T, TMember>)!;
                 }
                 finally
                 {

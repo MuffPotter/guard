@@ -16,12 +16,12 @@
     {
         private static class Messages
         {
-            public static string State(string caller)
+            public static string State(string? caller)
                 => caller != null
                     ? $"{caller} call is not valid due to the current state of the object."
                     : "Operation is not valid due to the current state of the object.";
 
-            public static string Support(string caller)
+            public static string Support(string? caller)
                 => caller != null ? $"{caller} is not supported" : "Specified method is not supported.";
 
             public static string Disposal()
@@ -277,7 +277,7 @@
 
 #endif
 
-            private static string ToString(object obj) => obj?.ToString() ?? "null";
+            private static string ToString(object? obj) => obj?.ToString() ?? "null";
 
             private static string Join(IEnumerable collection)
             {

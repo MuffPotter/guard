@@ -28,7 +28,7 @@ namespace Dawn
         public static ref readonly ArgumentInfo<MailAddress> HasHost(
             in this ArgumentInfo<MailAddress> argument,
             string host,
-            Func<MailAddress, string, string> message = null)
+            Func<MailAddress, string, string>? message = null)
         {
             if (argument.HasValue() &&
                 !argument.Value.Host.Equals(host, StringComparison.OrdinalIgnoreCase))
@@ -57,7 +57,7 @@ namespace Dawn
         public static ref readonly ArgumentInfo<MailAddress> DoesNotHaveHost(
             in this ArgumentInfo<MailAddress> argument,
             string host,
-            Func<MailAddress, string, string> message = null)
+            Func<MailAddress, string, string>? message = null)
         {
             if (argument.HasValue() &&
                 argument.Value.Host.Equals(host, StringComparison.OrdinalIgnoreCase))
@@ -87,7 +87,7 @@ namespace Dawn
         public static ref readonly ArgumentInfo<MailAddress> HostIn<TCollection>(
             in this ArgumentInfo<MailAddress> argument,
             TCollection hosts,
-            Func<MailAddress, IEnumerable<string>, string> message = null)
+            Func<MailAddress, IEnumerable<string>, string>? message = null)
             where TCollection : IEnumerable<string>
         {
             if (argument.HasValue() &&
@@ -118,7 +118,7 @@ namespace Dawn
         public static ref readonly ArgumentInfo<MailAddress> HostNotIn<TCollection>(
             in this ArgumentInfo<MailAddress> argument,
             TCollection hosts,
-            Func<MailAddress, IEnumerable<string>, string> message = null)
+            Func<MailAddress, IEnumerable<string>, string>? message = null)
             where TCollection : IEnumerable<string>
         {
             if (argument.HasValue() &&
@@ -145,7 +145,7 @@ namespace Dawn
         [DebuggerStepThrough]
         [GuardFunction("Email")]
         public static ref readonly ArgumentInfo<MailAddress> HasDisplayName(
-            in this ArgumentInfo<MailAddress> argument, Func<MailAddress, string> message = null)
+            in this ArgumentInfo<MailAddress> argument, Func<MailAddress, string>? message = null)
         {
             if (argument.HasValue() && argument.Value.DisplayName.Length == 0)
             {
@@ -170,7 +170,7 @@ namespace Dawn
         [DebuggerStepThrough]
         [GuardFunction("Email")]
         public static ref readonly ArgumentInfo<MailAddress> DoesNotHaveDisplayName(
-            in this ArgumentInfo<MailAddress> argument, Func<MailAddress, string> message = null)
+            in this ArgumentInfo<MailAddress> argument, Func<MailAddress, string>? message = null)
         {
             if (argument.HasValue() && argument.Value.DisplayName.Length > 0)
             {

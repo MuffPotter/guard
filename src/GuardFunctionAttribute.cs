@@ -21,8 +21,9 @@
         ///     <paramref name="shortcut" /> does not start with "g", <paramref name="shortcut" />
         ///     does starts with "gx" or <paramref name="shortcut" /> is shorter than two characters.
         /// </exception>
-        public GuardFunctionAttribute(string group, string shortcut = null, int order = 0)
+        public GuardFunctionAttribute(string group, string? shortcut = null, int order = 0)
         {
+#pragma warning disable CS8620
             this.Group = Guard.Argument(group, nameof(group))
                 .NotNull()
                 .NotWhiteSpace();
@@ -31,6 +32,7 @@
                 .StartsWith("g", StringComparison.Ordinal)
                 .DoesNotStartWith("gx", StringComparison.Ordinal)
                 .MinLength(2);
+#pragma warning restore CS8620
 
             this.Order = order;
         }
@@ -39,7 +41,7 @@
         public string Group { get; }
 
         /// <summary>The shortcut of the function snippet.</summary>
-        public string Shortcut { get; }
+        public string? Shortcut { get; }
 
         /// <summary>The priority of a function along its overloads.</summary>
         public int Order { get; }

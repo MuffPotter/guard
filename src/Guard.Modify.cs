@@ -38,7 +38,9 @@
         public static ArgumentInfo<TTarget> Modify<TSource, TTarget>(
             in this ArgumentInfo<TSource> argument, Func<TSource, TTarget> convert)
         {
+#pragma warning disable CS8620
             Argument(convert, nameof(convert)).NotNull();
+#pragma warning restore CS8620
             return new ArgumentInfo<TTarget>(
                 convert(argument.Value), argument.Name, true, argument.Secure);
         }
@@ -72,9 +74,11 @@
         public static ArgumentInfo<TTarget> Wrap<TSource, TTarget>(
             in this ArgumentInfo<TSource> argument,
             Func<TSource, TTarget> convert,
-            Func<TSource, string> message = null)
+            Func<TSource, string>? message = null)
         {
+#pragma warning disable CS8620
             Argument(convert, nameof(convert)).NotNull();
+#pragma warning restore CS8620
             try
             {
                 return new ArgumentInfo<TTarget>(
@@ -100,11 +104,14 @@
         public static ArgumentInfo<T> Clone<T>(in this ArgumentInfo<T> argument)
             where T : class, ICloneable
         {
-            if (!argument.HasValue())
+            if (argument.Value is null)
                 return argument;
 
             return new ArgumentInfo<T>(
-                argument.Value.Clone() as T, argument.Name, argument.Modified, argument.Secure);
+                (argument.Value.Clone() as T)!,
+                argument.Name,
+                argument.Modified,
+                argument.Secure);
         }
 
 #endif

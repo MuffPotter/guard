@@ -35,7 +35,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Initialization", "ga", order: 1)]
         public static ArgumentInfo<T> Argument<T>(
-            T value, [InvokerParameterName] string name = null, bool secure = false)
+            T value, [InvokerParameterName] string? name = null, bool secure = false)
             => new ArgumentInfo<T>(value, name, secure: secure);
 
         /// <summary>
@@ -69,7 +69,7 @@
         public static Exception Fail(Exception exception)
         {
 #if !NETSTANDARD1_0
-            StackTrace stackTrace = null;
+            StackTrace? stackTrace = null;
             for (var scope = Scope.Current; scope != null; scope = scope.Parent)
             {
                 scope.ExceptionInterceptor?.Invoke(
@@ -94,7 +94,7 @@
             private static readonly string DefaultName = $"The {typeof(T)} argument";
 
             /// <summary>The argument name.</summary>
-            private readonly string name;
+            private readonly string? name;
 
             /// <summary>
             ///     Initializes a new instance of the <see cref="ArgumentInfo{T} " /> struct.
@@ -112,7 +112,7 @@
             [DebuggerStepThrough]
             public ArgumentInfo(
                 T value,
-                [InvokerParameterName] string name,
+                [InvokerParameterName] string? name,
                 bool modified = false,
                 bool secure = false)
             {
@@ -148,7 +148,7 @@
                 get
                 {
                     var name = this.name;
-                    var value = this.HasValue() ? this.Value.ToString() : "null";
+                    var value = this.Value?.ToString() ?? "null";
                     var result = name is null ? value : $"{name}: {value}";
                     return this.Secure ? $"[SECURE] {result}" : result;
                 }
@@ -166,7 +166,7 @@
             [DebuggerStepThrough]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             [GuardFunction("Initialization")]
-            public bool HasValue() => NullChecker<T>.HasValue(this.Value);
+            public bool HasValue() => this.Value != null;
 
             /// <summary>Determines whether the argument value is <c>null</c>.</summary>
             /// <returns>
@@ -177,8 +177,7 @@
 
             /// <summary>Returns the string representation of the argument value.</summary>
             /// <returns>String representation of the argument value.</returns>
-            public override string ToString()
-                => this.HasValue() ? this.Value.ToString() : string.Empty;
+            public override string ToString() => this.Value?.ToString() ?? string.Empty;
         }
     }
 }

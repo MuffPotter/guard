@@ -23,7 +23,7 @@
             [ContractAnnotation("condition:false => halt")]
             [DebuggerStepThrough]
             [GuardFunction("Predicate", "greq")]
-            public ArgumentInfo<T> Require(bool condition, Func<T, string> message = null)
+            public ArgumentInfo<T> Require(bool condition, Func<T, string>? message = null)
                 => this.Require<ArgumentException>(condition, message);
 
             /// <summary>
@@ -48,7 +48,7 @@
             [DebuggerStepThrough]
             [GuardFunction("Predicate", "greqe")]
             public ArgumentInfo<T> Require<TException>(
-                bool condition, Func<T, string> message = null)
+                bool condition, Func<T, string>? message = null)
                 where TException : Exception
             {
                 if (this.HasValue() && !condition)
@@ -73,7 +73,7 @@
             [AssertionMethod]
             [DebuggerStepThrough]
             [GuardFunction("Predicate", "greq")]
-            public ArgumentInfo<T> Require(Func<T, bool> predicate, Func<T, string> message = null)
+            public ArgumentInfo<T> Require(Func<T, bool> predicate, Func<T, string>? message = null)
                 => this.Require<ArgumentException>(predicate, message);
 
             /// <summary>
@@ -97,7 +97,7 @@
             [DebuggerStepThrough]
             [GuardFunction("Predicate", "greqe")]
             public ArgumentInfo<T> Require<TException>(
-                Func<T, bool> predicate, Func<T, string> message = null)
+                Func<T, bool> predicate, Func<T, string>? message = null)
                 where TException : Exception
             {
                 if (this.HasValue() && predicate?.Invoke(this.Value) == false)
@@ -130,12 +130,12 @@
                 var type = typeof(T);
                 if (type == typeof(ArgumentException))
                     return (paramName, message) =>
-                        new ArgumentException(message, paramName) as T;
+                        (new ArgumentException(message, paramName) as T)!;
 
                 if (type.IsSubclassOf(typeof(ArgumentException)))
                 {
                     if (TryGetFactoryWithTwoStringArguments(out var two))
-                        return two;
+                        return two!;
 
                     if (TryGetFactoryWithOneStringArgument(out var one))
                         return (paramName, message) => one(paramName);
@@ -154,7 +154,7 @@
                         throw new ArgumentException($"An instance of {type} cannot be initialized.", x);
                     };
 
-                bool TryGetFactoryWithTwoStringArguments(out Func<string, string, T> factory)
+                bool TryGetFactoryWithTwoStringArguments(out Func<string, string, T>? factory)
                 {
                     var ctor = type.GetConstructor(new[] { typeof(string), typeof(string) });
                     if (ctor != null)
@@ -175,7 +175,7 @@
                     return false;
                 }
 
-                bool TryGetFactoryWithOneStringArgument(out Func<string, T> factory)
+                bool TryGetFactoryWithOneStringArgument(out Func<string, T>? factory)
                 {
                     var ctor = type.GetConstructor(new[] { typeof(string) });
                     if (ctor != null)
@@ -191,7 +191,7 @@
                     return false;
                 }
 
-                bool TryGetFactoryWithNoArguments(out Func<T> factory)
+                bool TryGetFactoryWithNoArguments(out Func<T>? factory)
                 {
                     var ctor = type.GetConstructor(Array<Type>.Empty);
                     if (ctor != null)

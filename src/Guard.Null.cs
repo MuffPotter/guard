@@ -2,8 +2,6 @@
 {
     using System;
     using System.Diagnostics;
-    using System.Linq.Expressions;
-    using System.Runtime.CompilerServices;
     using JetBrains.Annotations;
 
     /// <content>Nullability preconditions.</content>
@@ -21,11 +19,11 @@
         [AssertionMethod]
         [DebuggerStepThrough]
         [GuardFunction("Null", "gn")]
-        public static ref readonly ArgumentInfo<T> Null<T>(
-            in this ArgumentInfo<T> argument, Func<T, string> message = null)
+        public static ref readonly ArgumentInfo<T?> Null<T>(
+            in this ArgumentInfo<T?> argument, Func<T, string>? message = null)
             where T : class
         {
-            if (argument.HasValue())
+            if (argument.Value != null)
             {
                 var m = message?.Invoke(argument.Value) ?? Messages.Null(argument);
                 throw Fail(new ArgumentException(m, argument.Name));
@@ -53,13 +51,12 @@
         [DebuggerStepThrough]
         [GuardFunction("Null", "gn")]
         public static ref readonly ArgumentInfo<T?> Null<T>(
-            in this ArgumentInfo<T?> argument, Func<T?, string> message = null)
+            in this ArgumentInfo<T?> argument, Func<T, string>? message = null)
             where T : struct
         {
-            if (argument.HasValue())
+            if (argument.Value.HasValue)
             {
-                Debug.Assert(argument.Value.HasValue, "argument.HasValue");
-                var m = message?.Invoke(argument.Value.Value) ?? Messages.Null(argument);
+                var m = message?.Invoke(argument.Value.GetValueOrDefault()) ?? Messages.Null(argument);
                 throw Fail(new ArgumentException(m, argument.Name));
             }
 
@@ -86,10 +83,10 @@
         [DebuggerStepThrough]
         [GuardFunction("Null", "gnn")]
         public static ref readonly ArgumentInfo<T> NotNull<T>(
-            in this ArgumentInfo<T> argument, string message = null)
+            in this ArgumentInfo<T?> argument, string? message = null)
             where T : class
         {
-            if (!argument.HasValue())
+            if (argument.Value is null)
             {
                 var m = message ?? Messages.NotNull(argument);
                 throw Fail(!argument.Modified
@@ -97,7 +94,9 @@
                     : new ArgumentException(m, argument.Name));
             }
 
+#pragma warning disable CS8619
             return ref argument;
+#pragma warning restore CS8619
         }
 
         /// <summary>Requires the nullable argument not to be <c>null</c>.</summary>
@@ -120,10 +119,10 @@
         [DebuggerStepThrough]
         [GuardFunction("Null", "gnn")]
         public static ArgumentInfo<T> NotNull<T>(
-            in this ArgumentInfo<T?> argument, string message = null)
+            in this ArgumentInfo<T?> argument, string? message = null)
             where T : struct
         {
-            if (!argument.HasValue())
+            if (!argument.Value.HasValue)
             {
                 var m = message ?? Messages.NotNull(argument);
                 throw Fail(!argument.Modified
@@ -182,9 +181,9 @@
         [DebuggerStepThrough]
         [GuardFunction("Null")]
         public static void NotAllNull<T1, T2>(
-            in ArgumentInfo<T1> argument1, in ArgumentInfo<T2> argument2, string message = null)
+            in ArgumentInfo<T1> argument1, in ArgumentInfo<T2> argument2, string? message = null)
         {
-            if (!argument1.HasValue() && !argument2.HasValue())
+            if (argument1.Value == null && argument2.Value == null)
             {
                 var m = message ?? Messages.NotAllNull(argument1.Name, argument2.Name);
                 throw Fail(new ArgumentNullException($"{argument1.Name}, {argument2.Name}", m));
@@ -212,64 +211,12 @@
             in ArgumentInfo<T1> argument1,
             in ArgumentInfo<T2> argument2,
             in ArgumentInfo<T3> argument3,
-            string message = null)
+            string? message = null)
         {
-            if (!argument1.HasValue() && !argument2.HasValue() && !argument3.HasValue())
+            if (argument1.Value == null && argument2.Value == null && argument3.Value == null)
             {
                 var m = message ?? Messages.NotAllNull(argument1.Name, argument2.Name, argument3.Name);
                 throw Fail(new ArgumentNullException($"{argument1.Name}, {argument2.Name}, {argument3.Name}", m));
-            }
-        }
-
-        /// <summary>Provides a <c>null</c> checking helper.</summary>
-        /// <typeparam name="T">The type of the instance to check against <c>null</c>.</typeparam>
-        private static class NullChecker<T>
-        {
-            /// <summary>
-            ///     A function that determines whether a specified instance of type
-            ///     <typeparamref name="T" /> is not <c>null</c>.
-            /// </summary>
-            private static readonly IsNotNull HasValueImpl = InitHasValue();
-
-            /// <summary>A delegate that checks whether an object is not <c>null</c>.</summary>
-            /// <param name="value">The value to check against <c>null</c>.</param>
-            /// <returns>
-            ///     <c>true</c>, if <paramref name="value" /> is not <c>null</c>; otherwise, <c>false</c>.
-            /// </returns>
-            private delegate bool IsNotNull(in T value);
-
-            /// <summary>
-            ///     Determines whether a specified instance of type <typeparamref name="T" /> is not <c>null</c>.
-            /// </summary>
-            /// <param name="value">The value to check against <c>null</c>.</param>
-            /// <returns>
-            ///     <c>true</c>, if <paramref name="value" /> is not <c>null</c>; otherwise, <c>false</c>.
-            /// </returns>
-            [ContractAnnotation("value:notnull => true; value:null => false")]
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public static bool HasValue(in T value) => HasValueImpl(value);
-
-            /// <summary>Initializes <see cref="HasValue" />.</summary>
-            /// <returns>
-            ///     A function that determines whether a specified instance of type
-            ///     <typeparamref name="T" /> is not <c>null</c>.
-            /// </returns>
-            private static IsNotNull InitHasValue()
-            {
-                var type = typeof(T);
-                if (!type.IsValueType())
-                    return (in T v) => v != null;
-
-                if (type.IsGenericType(typeof(Nullable<>)))
-                {
-                    var value = Expression.Parameter(type.MakeByRefType(), "value");
-                    var get = type.GetPropertyGetter("HasValue");
-                    var call = Expression.Call(value, get);
-                    var lambda = Expression.Lambda<IsNotNull>(call, value);
-                    return lambda.Compile();
-                }
-
-                return (in T v) => true;
             }
         }
     }

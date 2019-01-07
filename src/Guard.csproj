@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <TargetFrameworks>netstandard2.0;netstandard1.0</TargetFrameworks>
     <AssemblyName>Dawn.Guard</AssemblyName>
     <Product>Dawn Utils</Product>
@@ -14,6 +14,7 @@
     <Optimize Condition="'$(Configuration)'=='Release' OR '$(Configuration)'=='CI'">true</Optimize>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Properties/Key.snk</AssemblyOriginatorKeyFile>
+    <NullableReferenceTypes>true</NullableReferenceTypes>
   </PropertyGroup>
 
   <ItemGroup>

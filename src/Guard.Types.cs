@@ -29,7 +29,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Type")]
         public static ArgumentInfo<T> Type<T>(
-            in this ArgumentInfo<object> argument, Func<object, string> message = null)
+            in this ArgumentInfo<object> argument, Func<object, string>? message = null)
         {
             if (!TypeInfo<T>.CanBeInitializedFrom(argument.Value))
             {
@@ -61,7 +61,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Type")]
         public static ref readonly ArgumentInfo<object> NotType<T>(
-            in this ArgumentInfo<object> argument, Func<T, string> message = null)
+            in this ArgumentInfo<object> argument, Func<T, string>? message = null)
         {
             if (argument.HasValue() && TypeInfo<T>.CanBeInitializedFrom(argument.Value))
             {
@@ -89,9 +89,9 @@
         [DebuggerStepThrough]
         [GuardFunction("Type")]
         public static ref readonly ArgumentInfo<object> Type(
-            in this ArgumentInfo<object> argument, Type type, Func<object, Type, string> message = null)
+            in this ArgumentInfo<object> argument, Type type, Func<object, Type, string>? message = null)
         {
-            if (argument.HasValue() && !TypeInfo.CanBeConvertedTo(argument.Value, type))
+            if (argument.HasValue() && type != null && !TypeInfo.CanBeConvertedTo(argument.Value, type))
             {
                 var m = message?.Invoke(argument.Value, type) ?? Messages.Type(argument, type);
                 throw Fail(new ArgumentException(m, argument.Name));
@@ -119,9 +119,9 @@
         [DebuggerStepThrough]
         [GuardFunction("Type")]
         public static ref readonly ArgumentInfo<object> NotType(
-            in this ArgumentInfo<object> argument, Type type, Func<object, Type, string> message = null)
+            in this ArgumentInfo<object> argument, Type type, Func<object, Type, string>? message = null)
         {
-            if (argument.HasValue() && TypeInfo.CanBeConvertedTo(argument.Value, type))
+            if (argument.HasValue() && type != null && TypeInfo.CanBeConvertedTo(argument.Value, type))
             {
                 var m = message?.Invoke(argument.Value, type) ?? Messages.NotType(argument, type);
                 throw Fail(new ArgumentException(m, argument.Name));
@@ -151,7 +151,7 @@
             [AssertionMethod]
             [DebuggerStepThrough]
             [GuardFunction("Type", "gcomp")]
-            public ArgumentInfo<T> Compatible<TTarget>(Func<T, string> message = null)
+            public ArgumentInfo<T> Compatible<TTarget>(Func<T, string>? message = null)
             {
                 if (!this.HasValue() || this.Value is TTarget value)
                     return this;
@@ -178,7 +178,7 @@
             [AssertionMethod]
             [DebuggerStepThrough]
             [GuardFunction("Type", "gncomp")]
-            public ArgumentInfo<T> NotCompatible<TTarget>(Func<TTarget, string> message = null)
+            public ArgumentInfo<T> NotCompatible<TTarget>(Func<TTarget, string>? message = null)
             {
                 if (this.HasValue() && this.Value is TTarget value)
                 {
@@ -210,7 +210,7 @@
             [AssertionMethod]
             [DebuggerStepThrough]
             [GuardFunction("Type", "gcast")]
-            public ArgumentInfo<TTarget> Cast<TTarget>(Func<T, string> message = null)
+            public ArgumentInfo<TTarget> Cast<TTarget>(Func<T, string>? message = null)
             {
                 if (this.Value is TTarget value)
                     return new ArgumentInfo<TTarget>(value, this.Name, this.Modified, this.Secure);

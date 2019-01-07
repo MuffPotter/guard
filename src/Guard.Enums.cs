@@ -25,7 +25,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Enum", "gdef")]
         public static ref readonly ArgumentInfo<T> Defined<T>(
-            this in ArgumentInfo<T> argument, Func<T, string> message = null)
+            this in ArgumentInfo<T> argument, Func<T, string>? message = null)
             where T : struct, System.Enum
         {
             if (!EnumInfo<T>.Values.Contains(argument.Value))
@@ -55,12 +55,12 @@
         [DebuggerStepThrough]
         [GuardFunction("Enum", "gdef")]
         public static ref readonly ArgumentInfo<T?> Defined<T>(
-            this in ArgumentInfo<T?> argument, Func<T?, string> message = null)
+            this in ArgumentInfo<T?> argument, Func<T?, string>? message = null)
             where T : struct, System.Enum
         {
             if (argument.HasValue())
             {
-                var value = argument.Value.Value;
+                var value = argument.Value.GetValueOrDefault();
                 if (!EnumInfo<T>.Values.Contains(value))
                 {
                     var m = message?.Invoke(value) ?? Messages.EnumDefined(argument);
@@ -89,7 +89,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Enum", "ghf")]
         public static ref readonly ArgumentInfo<T> HasFlag<T>(
-            this in ArgumentInfo<T> argument, T flag, Func<T, T, string> message = null)
+            this in ArgumentInfo<T> argument, T flag, Func<T, T, string>? message = null)
             where T : struct, System.Enum
         {
             if (!EnumInfo<T>.HasFlag(argument.Value, flag))
@@ -120,12 +120,12 @@
         [DebuggerStepThrough]
         [GuardFunction("Enum", "ghf")]
         public static ref readonly ArgumentInfo<T?> HasFlag<T>(
-            this in ArgumentInfo<T?> argument, T flag, Func<T, T, string> message = null)
+            this in ArgumentInfo<T?> argument, T flag, Func<T, T, string>? message = null)
             where T : struct, System.Enum
         {
             if (argument.HasValue())
             {
-                var value = argument.Value.Value;
+                var value = argument.Value.GetValueOrDefault();
                 if (!EnumInfo<T>.HasFlag(value, flag))
                 {
                     var m = message?.Invoke(value, flag) ?? Messages.EnumHasFlag(argument, flag);
@@ -154,7 +154,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Enum", "gnhf")]
         public static ref readonly ArgumentInfo<T> DoesNotHaveFlag<T>(
-            this in ArgumentInfo<T> argument, T flag, Func<T, T, string> message = null)
+            this in ArgumentInfo<T> argument, T flag, Func<T, T, string>? message = null)
             where T : struct, System.Enum
         {
             if (EnumInfo<T>.HasFlag(argument.Value, flag))
@@ -185,12 +185,12 @@
         [DebuggerStepThrough]
         [GuardFunction("Enum", "gnhf")]
         public static ref readonly ArgumentInfo<T?> DoesNotHaveFlag<T>(
-            this in ArgumentInfo<T?> argument, T flag, Func<T, T, string> message = null)
+            this in ArgumentInfo<T?> argument, T flag, Func<T, T, string>? message = null)
             where T : struct, System.Enum
         {
             if (argument.HasValue())
             {
-                var value = argument.Value.Value;
+                var value = argument.Value.GetValueOrDefault();
                 if (EnumInfo<T>.HasFlag(value, flag))
                 {
                     var m = message?.Invoke(value, flag) ?? Messages.EnumDoesNotHaveFlag(argument, flag);

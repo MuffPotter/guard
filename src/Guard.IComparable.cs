@@ -31,7 +31,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gmin")]
         public static ref readonly ArgumentInfo<T> Min<T>(
-            in this ArgumentInfo<T> argument, in T minValue, Func<T, T, string> message = null)
+            in this ArgumentInfo<T> argument, in T minValue, Func<T, T, string>? message = null)
             where T : IComparable<T>
         {
             if (argument.HasValue() && Comparer<T>.Default.Compare(argument.Value, minValue) < 0)
@@ -69,12 +69,12 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gmin")]
         public static ref readonly ArgumentInfo<T?> Min<T>(
-            in this ArgumentInfo<T?> argument, in T minValue, Func<T, T, string> message = null)
+            in this ArgumentInfo<T?> argument, in T minValue, Func<T, T, string>? message = null)
             where T : struct, IComparable<T>
         {
             if (argument.HasValue())
             {
-                var value = argument.Value.Value;
+                var value = argument.Value.GetValueOrDefault();
                 if (argument.HasValue() && Comparer<T>.Default.Compare(value, minValue) < 0)
                 {
                     var m = message?.Invoke(value, minValue) ?? Messages.Min(argument, minValue);
@@ -110,7 +110,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gmax")]
         public static ref readonly ArgumentInfo<T> Max<T>(
-            in this ArgumentInfo<T> argument, in T maxValue, Func<T, T, string> message = null)
+            in this ArgumentInfo<T> argument, in T maxValue, Func<T, T, string>? message = null)
             where T : IComparable<T>
         {
             if (argument.HasValue() && Comparer<T>.Default.Compare(argument.Value, maxValue) > 0)
@@ -148,12 +148,12 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gmax")]
         public static ref readonly ArgumentInfo<T?> Max<T>(
-            in this ArgumentInfo<T?> argument, in T maxValue, Func<T, T, string> message = null)
+            in this ArgumentInfo<T?> argument, in T maxValue, Func<T, T, string>? message = null)
             where T : struct, IComparable<T>
         {
             if (argument.HasValue())
             {
-                var value = argument.Value.Value;
+                var value = argument.Value.GetValueOrDefault();
                 if (argument.HasValue() && Comparer<T>.Default.Compare(value, maxValue) > 0)
                 {
                     var m = message?.Invoke(value, maxValue) ?? Messages.Max(argument, maxValue);
@@ -191,7 +191,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gr")]
         public static ref readonly ArgumentInfo<T> InRange<T>(
-            in this ArgumentInfo<T> argument, in T minValue, in T maxValue, Func<T, T, T, string> message = null)
+            in this ArgumentInfo<T> argument, in T minValue, in T maxValue, Func<T, T, T, string>? message = null)
             where T : IComparable<T>
         {
             if (argument.HasValue())
@@ -237,12 +237,12 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gr")]
         public static ref readonly ArgumentInfo<T?> InRange<T>(
-            in this ArgumentInfo<T?> argument, in T minValue, in T maxValue, Func<T, T, T, string> message = null)
+            in this ArgumentInfo<T?> argument, in T minValue, in T maxValue, Func<T, T, T, string>? message = null)
             where T : struct, IComparable<T>
         {
             if (argument.HasValue())
             {
-                var value = argument.Value.Value;
+                var value = argument.Value.GetValueOrDefault();
                 if (argument.HasValue())
                 {
                     var comparer = Comparer<T>.Default;
@@ -279,7 +279,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gz")]
         public static ref readonly ArgumentInfo<T> Zero<T>(
-            in this ArgumentInfo<T> argument, Func<T, string> message = null)
+            in this ArgumentInfo<T> argument, Func<T, string>? message = null)
             where T : struct, IComparable<T>
         {
             if (Comparer<T>.Default.Compare(argument.Value, default) != 0)
@@ -320,12 +320,12 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gz")]
         public static ref readonly ArgumentInfo<T?> Zero<T>(
-            in this ArgumentInfo<T?> argument, Func<T?, string> message = null)
+            in this ArgumentInfo<T?> argument, Func<T?, string>? message = null)
             where T : struct, IComparable<T>
         {
             if (argument.HasValue())
             {
-                var value = argument.Value.Value;
+                var value = argument.Value.GetValueOrDefault();
                 if (Comparer<T>.Default.Compare(value, default) != 0)
                 {
                     var m = message?.Invoke(value) ?? Messages.Zero(argument);
@@ -389,7 +389,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gnz")]
         public static ref readonly ArgumentInfo<T> NotZero<T>(
-            in this ArgumentInfo<T> argument, string message = null)
+            in this ArgumentInfo<T> argument, string? message = null)
             where T : struct, IComparable<T>
         {
             if (Comparer<T>.Default.Compare(argument.Value, default) == 0)
@@ -470,12 +470,12 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gnz")]
         public static ref readonly ArgumentInfo<T?> NotZero<T>(
-            in this ArgumentInfo<T?> argument, string message = null)
+            in this ArgumentInfo<T?> argument, string? message = null)
             where T : struct, IComparable<T>
         {
             if (argument.HasValue())
             {
-                var value = argument.Value.Value;
+                var value = argument.Value.GetValueOrDefault();
                 if (Comparer<T>.Default.Compare(value, default) == 0)
                 {
                     var m = message ?? Messages.NotZero(argument);
@@ -508,7 +508,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gpos")]
         public static ref readonly ArgumentInfo<T> Positive<T>(
-            in this ArgumentInfo<T> argument, Func<T, string> message = null)
+            in this ArgumentInfo<T> argument, Func<T, string>? message = null)
             where T : struct, IComparable<T>
         {
             if (Comparer<T>.Default.Compare(argument.Value, default) <= 0)
@@ -550,12 +550,12 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gpos")]
         public static ref readonly ArgumentInfo<T?> Positive<T>(
-            in this ArgumentInfo<T?> argument, Func<T?, string> message = null)
+            in this ArgumentInfo<T?> argument, Func<T?, string>? message = null)
             where T : struct, IComparable<T>
         {
             if (argument.HasValue())
             {
-                var value = argument.Value.Value;
+                var value = argument.Value.GetValueOrDefault();
                 if (Comparer<T>.Default.Compare(value, default) <= 0)
                 {
                     var m = message?.Invoke(value) ?? Messages.Positive(argument);
@@ -588,7 +588,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gnpos")]
         public static ref readonly ArgumentInfo<T> NotPositive<T>(
-            in this ArgumentInfo<T> argument, Func<T, string> message = null)
+            in this ArgumentInfo<T> argument, Func<T, string>? message = null)
             where T : struct, IComparable<T>
         {
             if (Comparer<T>.Default.Compare(argument.Value, default) > 0)
@@ -630,12 +630,12 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gnpos")]
         public static ref readonly ArgumentInfo<T?> NotPositive<T>(
-            in this ArgumentInfo<T?> argument, Func<T?, string> message = null)
+            in this ArgumentInfo<T?> argument, Func<T?, string>? message = null)
             where T : struct, IComparable<T>
         {
             if (argument.HasValue())
             {
-                var value = argument.Value.Value;
+                var value = argument.Value.GetValueOrDefault();
                 if (Comparer<T>.Default.Compare(value, default) > 0)
                 {
                     var m = message?.Invoke(value) ?? Messages.NotPositive(argument);
@@ -668,7 +668,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gneg")]
         public static ref readonly ArgumentInfo<T> Negative<T>(
-            in this ArgumentInfo<T> argument, Func<T, string> message = null)
+            in this ArgumentInfo<T> argument, Func<T, string>? message = null)
             where T : struct, IComparable<T>
         {
             if (Comparer<T>.Default.Compare(argument.Value, default) >= 0)
@@ -710,12 +710,12 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gneg")]
         public static ref readonly ArgumentInfo<T?> Negative<T>(
-            in this ArgumentInfo<T?> argument, Func<T?, string> message = null)
+            in this ArgumentInfo<T?> argument, Func<T?, string>? message = null)
             where T : struct, IComparable<T>
         {
             if (argument.HasValue())
             {
-                var value = argument.Value.Value;
+                var value = argument.Value.GetValueOrDefault();
                 if (Comparer<T>.Default.Compare(value, default) >= 0)
                 {
                     var m = message?.Invoke(value) ?? Messages.Negative(argument);
@@ -748,7 +748,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gnneg")]
         public static ref readonly ArgumentInfo<T> NotNegative<T>(
-            in this ArgumentInfo<T> argument, Func<T, string> message = null)
+            in this ArgumentInfo<T> argument, Func<T, string>? message = null)
             where T : struct, IComparable<T>
         {
             if (Comparer<T>.Default.Compare(argument.Value, default) < 0)
@@ -790,12 +790,12 @@
         [DebuggerStepThrough]
         [GuardFunction("Comparison", "gnneg")]
         public static ref readonly ArgumentInfo<T?> NotNegative<T>(
-            in this ArgumentInfo<T?> argument, Func<T?, string> message = null)
+            in this ArgumentInfo<T?> argument, Func<T?, string>? message = null)
             where T : struct, IComparable<T>
         {
             if (argument.HasValue())
             {
-                var value = argument.Value.Value;
+                var value = argument.Value.GetValueOrDefault();
                 if (Comparer<T>.Default.Compare(value, default) < 0)
                 {
                     var m = message?.Invoke(value) ?? Messages.NotNegative(argument);

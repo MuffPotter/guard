@@ -29,7 +29,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Collection", "gem")]
         public static ref readonly ArgumentInfo<TCollection> Empty<TCollection>(
-            in this ArgumentInfo<TCollection> argument, Func<TCollection, string> message = null)
+            in this ArgumentInfo<TCollection> argument, Func<TCollection, string>? message = null)
             where TCollection : IEnumerable
         {
             if (argument.HasValue() && Collection<TCollection>.Count(argument.Value, 1) != 0)
@@ -56,7 +56,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Collection", "gnem")]
         public static ref readonly ArgumentInfo<TCollection> NotEmpty<TCollection>(
-            in this ArgumentInfo<TCollection> argument, Func<TCollection, string> message = null)
+            in this ArgumentInfo<TCollection> argument, Func<TCollection, string>? message = null)
             where TCollection : IEnumerable
         {
             if (argument.HasValue() && Collection<TCollection>.Count(argument.Value, 1) == 0)
@@ -89,7 +89,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Collection", "gc")]
         public static ref readonly ArgumentInfo<TCollection> Count<TCollection>(
-            in this ArgumentInfo<TCollection> argument, int count, Func<TCollection, int, string> message = null)
+            in this ArgumentInfo<TCollection> argument, int count, Func<TCollection, int, string>? message = null)
             where TCollection : IEnumerable
         {
             if (argument.HasValue() && Collection<TCollection>.Count(argument.Value, count + 1) != count)
@@ -123,7 +123,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Collection", "gnc")]
         public static ref readonly ArgumentInfo<TCollection> NotCount<TCollection>(
-            in this ArgumentInfo<TCollection> argument, int count, Func<TCollection, int, string> message = null)
+            in this ArgumentInfo<TCollection> argument, int count, Func<TCollection, int, string>? message = null)
             where TCollection : IEnumerable
         {
             if (argument.HasValue() && Collection<TCollection>.Count(argument.Value, count + 1) == count)
@@ -156,7 +156,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Collection", "gminc")]
         public static ref readonly ArgumentInfo<TCollection> MinCount<TCollection>(
-            in this ArgumentInfo<TCollection> argument, int minCount, Func<TCollection, int, string> message = null)
+            in this ArgumentInfo<TCollection> argument, int minCount, Func<TCollection, int, string>? message = null)
             where TCollection : IEnumerable
         {
             if (argument.HasValue() && Collection<TCollection>.Count(argument.Value, minCount) < minCount)
@@ -189,7 +189,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Collection", "gmaxc")]
         public static ref readonly ArgumentInfo<TCollection> MaxCount<TCollection>(
-            in this ArgumentInfo<TCollection> argument, int maxCount, Func<TCollection, int, string> message = null)
+            in this ArgumentInfo<TCollection> argument, int maxCount, Func<TCollection, int, string>? message = null)
             where TCollection : IEnumerable
         {
             if (argument.HasValue() && Collection<TCollection>.Count(argument.Value, maxCount + 1) > maxCount)
@@ -226,7 +226,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Collection", "gcr")]
         public static ref readonly ArgumentInfo<TCollection> CountInRange<TCollection>(
-            in this ArgumentInfo<TCollection> argument, int minCount, int maxCount, Func<TCollection, int, int, string> message = null)
+            in this ArgumentInfo<TCollection> argument, int minCount, int maxCount, Func<TCollection, int, int, string>? message = null)
             where TCollection : IEnumerable
         {
             if (argument.HasValue())
@@ -264,7 +264,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Collection", "gcon")]
         public static ref readonly ArgumentInfo<TCollection> Contains<TCollection, TItem>(
-            in this ArgumentInfo<TCollection> argument, in TItem item, Func<TCollection, TItem, string> message = null)
+            in this ArgumentInfo<TCollection> argument, in TItem item, Func<TCollection, TItem, string>? message = null)
             where TCollection : IEnumerable
             => ref argument.Contains(item, null, message);
 
@@ -291,8 +291,8 @@
         public static ref readonly ArgumentInfo<TCollection> Contains<TCollection, TItem>(
             in this ArgumentInfo<TCollection> argument,
             in TItem item,
-            IEqualityComparer<TItem> comparer,
-            Func<TCollection, TItem, string> message = null)
+            IEqualityComparer<TItem>? comparer,
+            Func<TCollection, TItem, string>? message = null)
             where TCollection : IEnumerable
         {
             if (argument.HasValue() && !Collection<TCollection>.Typed<TItem>.Contains(argument.Value, item, comparer))
@@ -322,7 +322,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Collection", "gncon")]
         public static ref readonly ArgumentInfo<TCollection> DoesNotContain<TCollection, TItem>(
-            in this ArgumentInfo<TCollection> argument, in TItem item, Func<TCollection, TItem, string> message = null)
+            in this ArgumentInfo<TCollection> argument, in TItem item, Func<TCollection, TItem, string>? message = null)
             where TCollection : IEnumerable
             => ref argument.DoesNotContain(item, null, message);
 
@@ -349,8 +349,8 @@
         public static ref readonly ArgumentInfo<TCollection> DoesNotContain<TCollection, TItem>(
             in this ArgumentInfo<TCollection> argument,
             in TItem item,
-            IEqualityComparer<TItem> comparer,
-            Func<TCollection, TItem, string> message = null)
+            IEqualityComparer<TItem>? comparer,
+            Func<TCollection, TItem, string>? message = null)
             where TCollection : IEnumerable
         {
             if (argument.HasValue() && Collection<TCollection>.Typed<TItem>.Contains(argument.Value, item, comparer))
@@ -379,7 +379,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Collection", "gconn")]
         public static ref readonly ArgumentInfo<TCollection> ContainsNull<TCollection>(
-            in this ArgumentInfo<TCollection> argument, Func<TCollection, string> message = null)
+            in this ArgumentInfo<TCollection> argument, Func<TCollection, string>? message = null)
             where TCollection : IEnumerable
         {
             if (argument.HasValue() && !Collection<TCollection>.ContainsNull(argument.Value))
@@ -406,7 +406,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Collection", "gnconn")]
         public static ref readonly ArgumentInfo<TCollection> DoesNotContainNull<TCollection>(
-            in this ArgumentInfo<TCollection> argument, Func<TCollection, string> message = null)
+            in this ArgumentInfo<TCollection> argument, Func<TCollection, string>? message = null)
             where TCollection : IEnumerable
         {
             if (argument.HasValue() && Collection<TCollection>.ContainsNull(argument.Value))
@@ -440,7 +440,7 @@
         public static ref readonly ArgumentInfo<TItem> In<TCollection, TItem>(
             in this ArgumentInfo<TItem> argument,
             TCollection collection,
-            Func<TItem, TCollection, string> message = null)
+            Func<TItem, TCollection, string>? message = null)
             where TCollection : IEnumerable
             => ref argument.In(collection, null, message);
 
@@ -467,12 +467,12 @@
         public static ref readonly ArgumentInfo<TItem> In<TCollection, TItem>(
             in this ArgumentInfo<TItem> argument,
             TCollection collection,
-            IEqualityComparer<TItem> comparer,
-            Func<TItem, TCollection, string> message = null)
+            IEqualityComparer<TItem>? comparer,
+            Func<TItem, TCollection, string>? message = null)
             where TCollection : IEnumerable
         {
             if (argument.HasValue() &&
-                NullChecker<TCollection>.HasValue(collection) &&
+                collection != null &&
                 !Collection<TCollection>.Typed<TItem>.Contains(collection, argument.Value, comparer))
             {
                 var m = message?.Invoke(argument.Value, collection)
@@ -534,7 +534,7 @@
         public static ref readonly ArgumentInfo<TItem> NotIn<TCollection, TItem>(
             in this ArgumentInfo<TItem> argument,
             TCollection collection,
-            Func<TItem, TCollection, string> message = null)
+            Func<TItem, TCollection, string>? message = null)
             where TCollection : IEnumerable
             => ref argument.NotIn(collection, null, message);
 
@@ -561,12 +561,12 @@
         public static ref readonly ArgumentInfo<TItem> NotIn<TCollection, TItem>(
             in this ArgumentInfo<TItem> argument,
             TCollection collection,
-            IEqualityComparer<TItem> comparer,
-            Func<TItem, TCollection, string> message = null)
+            IEqualityComparer<TItem>? comparer,
+            Func<TItem, TCollection, string>? message = null)
             where TCollection : IEnumerable
         {
             if (argument.HasValue() &&
-                NullChecker<TCollection>.HasValue(collection) &&
+                collection != null &&
                 Collection<TCollection>.Typed<TItem>.Contains(collection, argument.Value, comparer))
             {
                 var m = message?.Invoke(argument.Value, collection)
@@ -794,7 +794,7 @@
                     if (nullableContains != null)
                     {
                         var t = Expression.Parameter(collectionType, "collection");
-                        var v = IsValueType(nullableContainsParamType)
+                        var v = IsValueType(nullableContainsParamType!)
                             ? Activator.CreateInstance(nullableContainsParamType)
                             : null;
 
@@ -872,7 +872,7 @@
                 ///     A function that determines whether a generic collection contains the
                 ///     specified element.
                 /// </summary>
-                public static readonly Func<TCollection, TItem, IEqualityComparer<TItem>, bool> Contains = InitContains();
+                public static readonly Func<TCollection, TItem, IEqualityComparer<TItem>?, bool> Contains = InitContains();
 
                 /// <summary>Initializes <see cref="Contains" />.</summary>
                 /// <returns>
@@ -925,7 +925,7 @@
                         }
                         else
                         {
-                            foreach (var current in collection)
+                            foreach (var current in collection!)
                                 if (current is TItem c && comparer.Equals(c, item))
                                     return true;
                         }
@@ -966,7 +966,7 @@
                                 }
                             }
 
-                            func = del as Func<object, TItem, IEqualityComparer<TItem>, bool>;
+                            func = (del as Func<object, TItem, IEqualityComparer<TItem>, bool>)!;
                         }
                         finally
                         {

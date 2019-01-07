@@ -28,9 +28,9 @@
         [DebuggerStepThrough]
         [GuardFunction("Uri", "gabs")]
         public static ref readonly ArgumentInfo<Uri> Absolute(
-            in this ArgumentInfo<Uri> argument, Func<Uri, string> message = null)
+            in this ArgumentInfo<Uri> argument, Func<Uri, string>? message = null)
         {
-            if (argument.HasValue() && !argument.Value.IsAbsoluteUri)
+            if (argument.Value?.IsAbsoluteUri == false)
             {
                 var m = message?.Invoke(argument.Value) ?? Messages.UriAbsolute(argument);
                 throw Fail(new ArgumentException(m, argument.Name));
@@ -53,9 +53,9 @@
         [DebuggerStepThrough]
         [GuardFunction("Uri", "grel")]
         public static ref readonly ArgumentInfo<Uri> Relative(
-            in this ArgumentInfo<Uri> argument, Func<Uri, string> message = null)
+            in this ArgumentInfo<Uri> argument, Func<Uri, string>? message = null)
         {
-            if (argument.HasValue() && argument.Value.IsAbsoluteUri)
+            if (argument.Value?.IsAbsoluteUri == true)
             {
                 var m = message?.Invoke(argument.Value) ?? Messages.UriRelative(argument);
                 throw Fail(new ArgumentException(m, argument.Name));
@@ -82,7 +82,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Uri", "gsch")]
         public static ref readonly ArgumentInfo<Uri> Scheme(
-            in this ArgumentInfo<Uri> argument, string scheme, Func<Uri, string, string> message = null)
+            in this ArgumentInfo<Uri> argument, string scheme, Func<Uri, string, string>? message = null)
         {
             if (argument.HasValue())
             {
@@ -112,7 +112,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Uri", "gnsch")]
         public static ref readonly ArgumentInfo<Uri> NotScheme(
-            in this ArgumentInfo<Uri> argument, string scheme, Func<Uri, string, string> message = null)
+            in this ArgumentInfo<Uri> argument, string scheme, Func<Uri, string, string>? message = null)
         {
             if (argument.HasValue() &&
                 argument.Value.IsAbsoluteUri &&
@@ -143,7 +143,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Uri", "ghttp")]
         public static ref readonly ArgumentInfo<Uri> Http(
-            in this ArgumentInfo<Uri> argument, Func<Uri, string> message = null)
+            in this ArgumentInfo<Uri> argument, Func<Uri, string>? message = null)
             => ref argument.Http(true, message);
 
         /// <summary>
@@ -167,7 +167,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Uri")]
         public static ref readonly ArgumentInfo<Uri> Http(
-            in this ArgumentInfo<Uri> argument, bool allowHttps, Func<Uri, string> message = null)
+            in this ArgumentInfo<Uri> argument, bool allowHttps, Func<Uri, string>? message = null)
         {
             if (!argument.HasValue())
                 return ref argument;
@@ -199,7 +199,7 @@
         [DebuggerStepThrough]
         [GuardFunction("Uri", "ghttps")]
         public static ref readonly ArgumentInfo<Uri> Https(
-            in this ArgumentInfo<Uri> argument, Func<Uri, string> message = null)
+            in this ArgumentInfo<Uri> argument, Func<Uri, string>? message = null)
         {
             if (argument.HasValue())
                 if (!argument.Value.IsAbsoluteUri || argument.Value.Scheme != HttpsUriScheme)

@@ -21,7 +21,7 @@
         [DebuggerStepThrough]
         [Obsolete("Use the enum preconditions directly, e.g. `arg.Defined()` instead of `arg.Enum().Defined()`.")]
         public static EnumArgumentInfo<T> Enum<T>(
-            in this ArgumentInfo<T> argument, Func<T, string> message = null)
+            in this ArgumentInfo<T> argument, Func<T, string>? message = null)
             where T : struct, IComparable, IFormattable
         {
             if (!typeof(T).IsEnum())
@@ -46,7 +46,7 @@
         [DebuggerStepThrough]
         [Obsolete("Use the enum preconditions directly, e.g. `arg.Defined()` instead of `arg.Enum().Defined()`.")]
         public static NullableEnumArgumentInfo<T> Enum<T>(
-            in this ArgumentInfo<T?> argument, Func<T?, string> message = null)
+            in this ArgumentInfo<T?> argument, Func<T?, string>? message = null)
             where T : struct, IComparable, IFormattable
         {
             if (!typeof(T).IsEnum())
@@ -94,7 +94,7 @@
             /// <returns>The current instance.</returns>
             [AssertionMethod]
             [DebuggerStepThrough]
-            public EnumArgumentInfo<T> Defined(Func<T, string> message = null)
+            public EnumArgumentInfo<T> Defined(Func<T, string>? message = null)
             {
                 if (!EnumInfo<T>.Values.Contains(this.Argument.Value))
                 {
@@ -116,7 +116,7 @@
             /// </exception>
             [AssertionMethod]
             [DebuggerStepThrough]
-            public EnumArgumentInfo<T> None(Func<T, string> message = null)
+            public EnumArgumentInfo<T> None(Func<T, string>? message = null)
             {
                 if (!EqualityComparer<T>.Default.Equals(this.Argument.Value, default))
                 {
@@ -138,7 +138,7 @@
             /// </exception>
             [AssertionMethod]
             [DebuggerStepThrough]
-            public EnumArgumentInfo<T> NotNone(Func<T, string> message = null)
+            public EnumArgumentInfo<T> NotNone(Func<T, string>? message = null)
             {
                 if (EqualityComparer<T>.Default.Equals(this.Argument.Value, default))
                 {
@@ -161,7 +161,7 @@
             /// </exception>
             [AssertionMethod]
             [DebuggerStepThrough]
-            public EnumArgumentInfo<T> Equal(T other, Func<T, T, string> message = null)
+            public EnumArgumentInfo<T> Equal(T other, Func<T, T, string>? message = null)
             {
                 if (!EqualityComparer<T>.Default.Equals(this.Argument.Value, other))
                 {
@@ -186,7 +186,7 @@
             /// </exception>
             [AssertionMethod]
             [DebuggerStepThrough]
-            public EnumArgumentInfo<T> NotEqual(T other, Func<T, string> message = null)
+            public EnumArgumentInfo<T> NotEqual(T other, Func<T, string>? message = null)
             {
                 if (EqualityComparer<T>.Default.Equals(this.Argument.Value, other))
                 {
@@ -210,7 +210,7 @@
             /// </exception>
             [AssertionMethod]
             [DebuggerStepThrough]
-            public EnumArgumentInfo<T> HasFlag(T flag, Func<T, T, string> message = null)
+            public EnumArgumentInfo<T> HasFlag(T flag, Func<T, T, string>? message = null)
             {
                 if (!EnumInfo<T>.HasFlag(this.Argument.Value, flag))
                 {
@@ -233,7 +233,7 @@
             /// </exception>
             [AssertionMethod]
             [DebuggerStepThrough]
-            public EnumArgumentInfo<T> DoesNotHaveFlag(T flag, Func<T, T, string> message = null)
+            public EnumArgumentInfo<T> DoesNotHaveFlag(T flag, Func<T, T, string>? message = null)
             {
                 if (EnumInfo<T>.HasFlag(this.Argument.Value, flag))
                 {
@@ -276,7 +276,7 @@
             /// <exception cref="ArgumentException">
             ///     <see cref="Argument" /> value is not <c>null</c>.
             /// </exception>
-            public ArgumentInfo<T?> Null(Func<T, string> message = null)
+            public ArgumentInfo<T?> Null(Func<T, string>? message = null)
             {
                 if (this.Argument.HasValue())
                 {
@@ -300,7 +300,7 @@
             ///     <see cref="Argument" /> value is <c>null</c> and the argument is modified after
             ///     its initialization.
             /// </exception>
-            public EnumArgumentInfo<T> NotNull(string message = null)
+            public EnumArgumentInfo<T> NotNull(string? message = null)
 #pragma warning disable CS0618 // Type or member is obsolete
                 => this.Argument.NotNull(message).Enum();
 
@@ -321,7 +321,7 @@
             /// <returns>The current instance.</returns>
             [AssertionMethod]
             [DebuggerStepThrough]
-            public NullableEnumArgumentInfo<T> Defined(Func<T, string> message = null)
+            public NullableEnumArgumentInfo<T> Defined(Func<T, string>? message = null)
             {
                 if (this.NotNull(out var a))
                     a.Defined(message);
@@ -342,7 +342,7 @@
             /// </exception>
             [AssertionMethod]
             [DebuggerStepThrough]
-            public NullableEnumArgumentInfo<T> None(Func<T, string> message = null)
+            public NullableEnumArgumentInfo<T> None(Func<T, string>? message = null)
             {
                 if (this.NotNull(out var a))
                     a.None(message);
@@ -361,7 +361,7 @@
             /// </exception>
             [AssertionMethod]
             [DebuggerStepThrough]
-            public NullableEnumArgumentInfo<T> NotNone(Func<T, string> message = null)
+            public NullableEnumArgumentInfo<T> NotNone(Func<T, string>? message = null)
             {
                 if (this.NotNull(out var a))
                     a.NotNone(message);
@@ -383,7 +383,7 @@
             /// </exception>
             [AssertionMethod]
             [DebuggerStepThrough]
-            public NullableEnumArgumentInfo<T> Equal(T other, Func<T, T, string> message = null)
+            public NullableEnumArgumentInfo<T> Equal(T other, Func<T, T, string>? message = null)
             {
                 if (this.NotNull(out var a))
                     a.Equal(other, message);
@@ -406,7 +406,7 @@
             /// </exception>
             [AssertionMethod]
             [DebuggerStepThrough]
-            public NullableEnumArgumentInfo<T> NotEqual(T other, Func<T, string> message = null)
+            public NullableEnumArgumentInfo<T> NotEqual(T other, Func<T, string>? message = null)
             {
                 if (this.NotNull(out var a))
                     a.NotEqual(other, message);
@@ -430,7 +430,7 @@
             /// </exception>
             [AssertionMethod]
             [DebuggerStepThrough]
-            public NullableEnumArgumentInfo<T> HasFlag(T flag, Func<T, T, string> message = null)
+            public NullableEnumArgumentInfo<T> HasFlag(T flag, Func<T, T, string>? message = null)
             {
                 if (this.NotNull(out var a))
                     a.HasFlag(flag, message);
@@ -454,7 +454,7 @@
             /// </exception>
             [AssertionMethod]
             [DebuggerStepThrough]
-            public NullableEnumArgumentInfo<T> DoesNotHaveFlag(T flag, Func<T, T, string> message = null)
+            public NullableEnumArgumentInfo<T> DoesNotHaveFlag(T flag, Func<T, T, string>? message = null)
             {
                 if (this.NotNull(out var a))
                     a.DoesNotHaveFlag(flag, message);
